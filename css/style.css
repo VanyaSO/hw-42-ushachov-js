@@ -1,0 +1,17 @@
+.container_gallery{
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.gallery_item{
+    background: silver;
+    padding: 10px 10px;
+    margin-bottom: 3px;
+    margin-right: 2px;
+    margin-left: 2px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

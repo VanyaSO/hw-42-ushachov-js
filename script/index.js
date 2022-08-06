@@ -1,51 +1,84 @@
-// Task #1
-// Реализовать рекурсивную функцию которая находит факториал переданного в нее числа
-// getFactorial(3) // в данном случае должна вернуть факториал числа 3! = 3 * 2 * 1
+class Albums{
 
-function getFactorial(num){
-
-    if(num === 0 || num === 1){
-        return 1;
+    constructor(API_URL, data) {
+        this.API_URL = null
+        this.data = null;
     }
 
-    return num * getFactorial(num - 1);
-}
+    async getData(url){
 
-console.log('Task #1');
-console.log(getFactorial(3));
+        this.data = fetch(url, {
+            method: 'GET',
+            headers: {
+                accept: 'application/json, text/plain, */*',
+
+            }
+        })
+
+        let response = await this.data;
+
+        response = await response.json();
 
 
-// Task #2
-// Реализовать рекурсивную функцию которая находит возводит число в степень.
-// Число которое нужно возвести в степень передается как первый аргумент в функцию
-// Степень передается как второй аргумент в функцию pow(num, degree)
-
-function pow(num, degree){
-
-    if(degree === 1){
-        return num;
+        return response;
     }
 
-    return num * pow(num, degree - 1);
-}
+    start(){
+        this.API_URL = 'https://jsonplaceholder.typicode.com/albums';
 
-console.log('Task #2');
-console.log(pow(3,5));
+        const wrapper = document.querySelector('#gallery_book');
 
-// Task #3
-// Рекурсивное суммирование
-// Задача: напишите рекурсивную функцию для вычисления суммы заданных положительных целых чисел a и b
-// без прямого использования оператора +.
+        this.getData(this.API_URL).then( response => {
 
-function sum(a, b){
+            this.data = response;
 
-    if(a === 0){
-        return b;
+            for(let item of this.data){
+                const blockGallery = document.createElement("div");
+
+                blockGallery.classList.add('col-2', 'gallery_item');
+                blockGallery.setAttribute('data-id', item.id);
+                blockGallery.innerHTML = `${item.title}`;
+
+                wrapper.append(blockGallery);
+            }
+
+        })
+
+        if(JSON.parse(localStorage.getItem("album"))){
+            localStorage.clear();
+        }
+
+        wrapper.addEventListener('click', this.goAlbum);
+
     }
 
-    return sum(a - 1,b + 1);
+
+
+    goAlbum = (event) => {
+        event.stopPropagation();
+
+        if(!event.target.classList.contains('gallery_item')) return;
+
+        const albumId = +event.target.closest('[data-id]').getAttribute('data-id');
+
+        this.sendPhotoAlbum(albumId);
+
+    }
+
+
+    sendPhotoAlbum = (id) => {
+
+        const API_URL = `https://jsonplaceholder.typicode.com/photos?albumId=${id}`;
+
+        this.getData(API_URL).then( response => {
+                this.data = response;
+                localStorage.setItem("album", JSON.stringify(this.data));
+                window.location.href = './../pages/photo.html';
+            })
+    }
 
 }
 
-console.log('Task #3');
-console.log(sum(3,5));
+const firstClass = new Albums();
+
+firstClass.start();
