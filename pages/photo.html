@@ -22,6 +22,28 @@
             justify-content: center;
 
         }
+
+        .title-page{
+            text-align: center;
+        }
+
+        .btn_come_back{
+            text-align: center;
+        }
+
+        .btn_come_back > a{
+            border-radius: 12px;
+            padding: 15px;
+            background: purple;
+            text-decoration: none;
+            color: white;
+            transition: .3;
+        }
+
+        .btn_come_back > a:hover{
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -30,8 +52,19 @@
     <div class="container_gallery">
 
         <div class="row d-flex justify-content-center" id="gallery_book">
-
+            <div class="col-12 title-page mb-4 mt-5">
+                <h3>PHOTOS</h3>
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col-12 btn_come_back mt-5">
+                <a href="./../index.html">
+                    Вернуться к альбомам
+                </a>
+            </div>
+        </div>
+
 
     </div>
 </div>
